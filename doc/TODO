@@ -1,0 +1,8 @@
+1. Migrate logging to tracing
+2. Should we migrate from using timestamp to using datetime<utc> in game table due to 2038
+3. Wait for better ENUM support in sqlx and then remove the current workarounds
+4. some form of rate limiting on sign-ups
+5. email verification for signup
+6. move from bcrypt to argon2/blake3/whatever?
+7. fix unwraps and expects
+8. Fix all TODO markers in the code
