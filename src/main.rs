@@ -47,11 +47,11 @@ async fn main() -> anyhow::Result<()> {
     
     let pool = MySqlPool::connect(&database_url).await?;
 
-    // Retrieve the JWT secret from the env var and store it in the shared AppState
-    // TODO: set the token_duration to a compile time value (for now)
+    // Retrieve the JWT secret and token duration from the env var and store it in the shared AppState
     let state = AppState {
         jwt_secret: env::var("JWT_SECRET").expect("$JWT_SECRET is not set"),
-        token_duration: 5000000,
+        token_duration: env::var("TOKEN_DURATION").expect("$TOKEN_DURATION is not set")
+            .parse::<i64>().expect("$TOKEN_DURATION is not numeric")
     };
 
     // Define routes
@@ -72,6 +72,7 @@ async fn main() -> anyhow::Result<()> {
 
     // Start the server
     // TODO: tls -> there is now a axum-server crate that does this
+    // TODO: make duration also an env and remove state from all handlers (if possible)
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     debug!("Listening on {}", addr);
     axum::Server::bind(&addr)

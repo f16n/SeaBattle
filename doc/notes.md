@@ -78,5 +78,13 @@ add user (ADMIN)
 Create full user with all fields from input.
 Password will be hashed but does not need to comply to rules.
 
+================================================================================================
+When deploying a server
+
+when the DB is created it is prepopulated with 2 users:
+- self: used for the player that is the server itself
+- admin: The initial admin account
+Both accounts have an initial password of "$u64R:$4creT" (stored as a hash in the DB)
+The admin account has the admin role and can be used for admin tasks (and playing)
 
 

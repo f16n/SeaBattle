@@ -156,6 +156,16 @@ pub async fn signup(    State(state): State<AppState>,
                 return Err(CustomError::UserExists);
         }
 
+    // check if email address already exists, bail out if that is the case
+    let sql = "SELECT * FROM user where email_address=?";
+    if sqlx::query_as::<_,User>(sql)
+        .bind(&user.email_address)
+        .fetch_one(&pool)
+        .await.is_ok() {
+                error!("Trying to signup with a email-address that already exists");
+                return Err(CustomError::EmailExists);
+        }
+
     // Create a random verification number
     let verification_number: u32 = rand::random();
 
@@ -492,4 +502,3 @@ async fn mail_verification_code(display_name: &String, email_address: &String, v
     }
 
 }
-
